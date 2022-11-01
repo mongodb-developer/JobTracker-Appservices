@@ -1,0 +1,19 @@
+{
+    "id": "635138d5b22be57bacabf5ee",
+    "name": "onNewUserCreation",
+    "type": "AUTHENTICATION",
+    "config": {
+        "operation_type": "CREATE",
+        "providers": [
+            "local-userpass"
+        ]
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "onNewUser"
+            }
+        }
+    }
+}

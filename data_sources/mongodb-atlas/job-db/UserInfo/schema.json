@@ -1,0 +1,23 @@
+{
+    "bsonType": "object",
+    "properties": {
+        "_id": {
+            "bsonType": "string"
+        },
+        "email": {
+            "bsonType": "string"
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "phoneNumber": {
+            "bsonType": "long"
+        }
+    },
+    "required": [
+        "_id",
+        "name",
+        "email"
+    ],
+    "title": "UserInfo"
+}

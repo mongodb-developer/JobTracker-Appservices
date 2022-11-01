@@ -1,0 +1,16 @@
+[
+    {
+        "name": "resetFunc",
+        "private": true
+    },
+    {
+        "name": "onNewUser",
+        "private": false
+    },
+    {
+        "name": "getJobList",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    }
+]
