@@ -1,55 +1,82 @@
-
 <html>
-  <head>
-    <style>
-      body {
-        background-color: #F5F6F7;
-        color: #494747;
-        font-family: Helvetica, sans-serif;
-      }
-      a {
-        color: #006CBC;
-      }
-      h1 {
-        font-size: 60pt;
-        font-weight: 200;
-        text-align:center;
-      }
-      h2 {
-        font-size: 24pt;
-        font-weight: 400;
-        text-align:center;
-      }
-      .content{
-        padding-top:40px;
-      }
 
-      .footer {
-        font-size: 14pt;
-        font-weight: 200;
-        text-align:center;
+<head>
+
+  <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+  <script src="https://unpkg.com/vue@3"></script>
+
+  <style>
+
+  </style>
+  <script>
+    const APP_SERVICE_ID = "jobtrackerrealmapp-mlapp";
+    let vueApp;
+
+    function tryLogin(email, password) {
+      const credentials = Realm.Credentials.emailPassword(email, password);
+      /* Blank out PW on sucessful login*/
+      vueApp.realmApp.logIn(credentials)
+        .then((u) => { vueApp.realmuser = u; vueApp.fetchJobs() })
+        .catch((e) => { vueApp.message = e.error });
+    }
+
+    function fetchJobs() {
+      if (vueApp.realmApp.currentUser) {
+        vueApp.realmuser.functions.getJobList()
+          .then((jobs) => { vueApp.jobs = jobs })
+          .catch((e) => { vueApp.message = e.error });
       }
+    }
 
-	  .logo {
-		margin-top: 20px;
-	  }
+    function onLoad() {
+      const { createApp } = Vue
+      const realmApp = new Realm.App({ id: APP_SERVICE_ID });
+      console.log(realmApp);
+      vueApp = createApp({
+        methods: { tryLogin },
+        data() {
+          return {
+            username: "dispatch",
+            password: "",
+            realmuser: realmApp.currentUser,
+            message: "",
+            jobs: []
+          }
+        },
+        mounted() {
+          this.realmApp = realmApp; /* Non reactive */
+        },
+      }).mount("#vueapp")
+      console.log(vueApp)
+      fetchJobs();
 
-    </style>
-  </head>
-  <body>
-    <div class="content">
-      <h1>Hello, World!</h1>
-      <h2>This is your application.</h2>
-      <div class="footer">
-        <a href="https://docs.mongodb.com/realm/">Visit our documentation</a> to learn how to harness the power of App Services.
-        <p>
-        You can edit or replace this file with your own index.html.
-        </p>
+    }
 
-        <p>
-        We can't wait to see what you build!
-				</p>
-      </div>
+  </script>
+</head>
+
+<body onLoad="onLoad()">
+  <div id="vueapp">
+
+    <div v-if="!realmuser" id="login">
+      User: <input v-model="username" />
+      Password <input v-model="password" type="password">
+      <button @click="tryLogin(username,password)">Login</button>
     </div>
-  </body>
+    <div v-else id="joblist">
+      Job Track
+      <button @click="realmuser.logOut();realmuser=null;">Logout</button>
+      <table class="listview" id="listviewheaderrow">
+        <tr>
+            <th v-for="header in ['Time','Description','Status','User']">{{header}}<th>
+        </tr>
+        <tr v-for="job in jobs">
+          <th v-for="fname in ['creatindate','desc','status','user']">{{job[fname]}}<th>
+        </tr>
+    </table>
+    </div>
+    <div class="message">{{message}}</div>
+  </div>
+</body>
+
 </html>
