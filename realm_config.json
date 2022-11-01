@@ -1,0 +1,8 @@
+{
+    "app_id": "jobtrackerrealmapp-mlapp",
+    "config_version": 20210101,
+    "name": "JobTrackerRealmApp",
+    "location": "IE",
+    "provider_region": "aws-eu-west-1",
+    "deployment_model": "LOCAL"
+}
