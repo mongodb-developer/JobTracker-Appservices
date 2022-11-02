@@ -103,12 +103,13 @@
 
 <body onLoad="onLoad()">
   <div id="vueapp">
+    
     <!-- Login Dialog -->
     <div v-if="!realmuser">
       User: <input v-model="username" />
       Password <input v-model="password" type="password">
       <button class="btn btn-primary" @click="tryLogin(username,password)">Login</button>
-    </div>
+    </div> 
 
     <!-- App-->
     <div v-else>
