@@ -1,19 +1,8 @@
 /* Gets a list of all non completed jobs and any recently completed*/
-exports = function(arg){
-  /*
-    Accessing application's values:
-    var x = context.values.get("value_name");
-
-    Accessing a mongodb service:
-    var collection = context.services.get("mongodb-atlas").db("dbname").collection("coll_name");
-    collection.findOne({ owner_id: context.user.id }).then((doc) => {
-      // do something with doc
-    });
-
-    To call other named functions:
-    var result = context.functions.execute("function_name", arg1, arg2);
-
-    Try running in the console below.
-  */
-  return [{a:1}]
+exports = async function(arg){
+    const jobCollection = context.services.get("mongodb-atlas").db("job-db").collection("Job");
+    live = await jobCollection.find({status:{$in:["UNASSIGNED","ACCEPTED"]}}).sort({status:-1,date:1}).toArray()
+    archive =  await jobCollection.find({status:"DONE"}).limit(10).sort({date:1}).toArray()
+    return [...live,...archive]
+  
 }

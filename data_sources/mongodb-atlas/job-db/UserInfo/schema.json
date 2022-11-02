@@ -11,13 +11,14 @@
             "bsonType": "string"
         },
         "phoneNumber": {
-            "bsonType": "long"
+            "bsonType": "string"
         }
     },
     "required": [
         "_id",
         "name",
-        "email"
+        "email",
+        "phoneNumber"
     ],
     "title": "UserInfo"
 }

@@ -2,14 +2,15 @@
     "bsonType": "object",
     "properties": {
         "_id": {
-            "bsonType": "objectId"
+            "bsonType": "uuid"
         },
         "name": {
             "bsonType": "string"
         }
     },
     "required": [
-        "_id"
+        "_id",
+        "name"
     ],
     "title": "Location"
 }
