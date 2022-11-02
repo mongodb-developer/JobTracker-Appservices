@@ -1,13 +1,13 @@
+<!doctype html>
 <html>
 
 <head>
 
   <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
   <script src="https://unpkg.com/vue@3"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-
-  </style>
   <script>
     const APP_SERVICE_ID = "jobtrackerrealmapp-mlapp";
     let vueApp;
@@ -20,35 +20,81 @@
         .catch((e) => { vueApp.message = e.error });
     }
 
+    //Call a Server side custom function
     function fetchJobs() {
-      if (vueApp.realmApp.currentUser) {
+      if (vueApp?.realmuser) {
         vueApp.realmuser.functions.getJobList()
           .then((jobs) => { vueApp.jobs = jobs })
           .catch((e) => { vueApp.message = e.error });
       }
     }
 
+    //Call a Server side database call with security
+    //Applied via rules (read only for all users here)
+    async function getAreas() {
+      if (vueApp?.realmuser) {
+        const mongo = vueApp.realmuser.mongoClient("mongodb-atlas");
+        const locations = mongo.db("job-db").collection("Location");
+        const result = await locations.find({});//Find all
+        vueApp.areas = result;
+      }
+    }
+
+    /* Listen for changes, for simplictyhgere just refresh on any change */
+
+    async function watchForChanges() {
+      while (true) {
+        const mongo = vueApp?.realmuser?.mongoClient("mongodb-atlas");
+        if (mongo) {
+          const jobs = mongo.db("job-db").collection("Job");
+          try {
+            for await (const change of jobs.watch()) {
+              const { documentKey, fullDocument } = change; //Not using this
+              fetchJobs();
+            }
+          } catch (e) {
+            console.error(e.message)
+            //location.reload(); //Reload whole page on serious error
+          }
+        }
+      }
+    }
+
+
+    async function createNewTask(area, desc) {
+      if (vueApp?.realmuser) {
+        vueApp.realmuser.functions.createNewTask(vueApp.area, vueApp.desc)
+          .then(() => { vueApp.desc = "" })
+          .catch((e) => { vueApp.message = e.error });
+      }
+    }
+
     function onLoad() {
       const { createApp } = Vue
+      console.log("Here")
       const realmApp = new Realm.App({ id: APP_SERVICE_ID });
-      console.log(realmApp);
+      console.log("Here 2")
       vueApp = createApp({
-        methods: { tryLogin },
+        methods: { tryLogin, getAreas, createNewTask },
         data() {
           return {
             username: "dispatch",
             password: "",
             realmuser: realmApp.currentUser,
             message: "",
-            jobs: []
+            jobs: [],
+            areas: [],
+            area: "",
+            desc: ""
           }
         },
         mounted() {
           this.realmApp = realmApp; /* Non reactive */
         },
       }).mount("#vueapp")
-      console.log(vueApp)
+      getAreas();
       fetchJobs();
+      watchForChanges();
 
     }
 
@@ -57,26 +103,55 @@
 
 <body onLoad="onLoad()">
   <div id="vueapp">
-
-    <div v-if="!realmuser" id="login">
+    <!-- Login Dialog -->
+    <div v-if="!realmuser">
       User: <input v-model="username" />
       Password <input v-model="password" type="password">
-      <button @click="tryLogin(username,password)">Login</button>
+      <button class="btn btn-primary" @click="tryLogin(username,password)">Login</button>
     </div>
-    <div v-else id="joblist">
-      Job Track
-      <button @click="realmuser.logOut();realmuser=null;">Logout</button>
-      <table class="listview" id="listviewheaderrow">
-        <tr>
-            <th v-for="header in ['Time','Description','Status','User']">{{header}}<th>
-        </tr>
-        <tr v-for="job in jobs">
-          <th v-for="fname in ['creatindate','desc','status','user']">{{job[fname]}}<th>
-        </tr>
-    </table>
+
+    <!-- App-->
+    <div v-else>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+        <span class="navbar-brand">Dispatcher Overview</span>
+        <form class="form-inline my-2 my-lg-0">
+          <select class="form-control mr-sm-2" v-model="area">
+            <option v-for="area in areas"> {{area.name}} </option>
+          </select>
+          <input style="min-width: 40vw" class="form-control mr-sm-2" v-model="desc" type="description" placeholder="description of new task"
+            aria-label="description">
+          <button :disabled="desc.length < 10 || area ==''" class="btn btn-outline-success my-2 my-sm-0"
+            @click="createNewTask()">Create Task</button>
+        </form>
+        <form class="form-inline my-2 my-lg-0">
+        <button class="btn btn-primary float-right" @click="realmuser.logOut();realmuser=null;">Logout</button>
+          </form>
+      </nav>
     </div>
+
     <div class="message">{{message}}</div>
+
+    <table class="table table-primary">
+      <tr>
+        <th v-for="header in ['Time','Description','Status','Area','User']">{{header}}</th>
+      </tr>
+      <tr v-for="job in jobs">
+        <td>{{job.creationDate.toLocaleString()}}</td>
+        <td v-for="fname in ['desc','status','area','user']">{{job[fname]}}</td>
+      </tr>
+    </table>
   </div>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+    integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
