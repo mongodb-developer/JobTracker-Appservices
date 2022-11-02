@@ -94,7 +94,7 @@
       }).mount("#vueapp")
       getAreas();
       fetchJobs();
-      watchForChanges();
+      //watchForChanges();
 
     }
 
@@ -115,27 +115,32 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
         <span class="navbar-brand">Dispatcher Overview</span>
         <form class="form-inline my-2 my-lg-0">
-          <select class="form-control mr-sm-2" v-model="area">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Area</span>
+            </div>
+            <select  class="form-control mr-sm-2" v-model="area">
             <option v-for="area in areas"> {{area.name}} </option>
           </select>
+        </div>
           <input style="min-width: 40vw" class="form-control mr-sm-2" v-model="desc" type="description" placeholder="description of new task"
             aria-label="description">
-          <button :disabled="desc.length < 10 || area ==''" class="btn btn-outline-success my-2 my-sm-0"
+          <button :disabled="desc.length < 10 || area ==''" class="btn btn-primary my-2 my-sm-0"
             @click="createNewTask()">Create Task</button>
         </form>
         <form class="form-inline my-2 my-lg-0">
-        <button class="btn btn-primary float-right" @click="realmuser.logOut();realmuser=null;">Logout</button>
+        <button class="btn btn-warning float-right" @click="realmuser.logOut();realmuser=null;">Logout</button>
           </form>
       </nav>
     </div>
 
+  
     <div class="message">{{message}}</div>
-
-    <table class="table table-primary">
+    <table class="table table-sm table-bordered">
       <tr>
         <th v-for="header in ['Time','Description','Status','Area','User']">{{header}}</th>
       </tr>
-      <tr v-for="job in jobs">
+      <tr :class="{UNASSIGNED:'table-danger',ACCEPTED:'table-success',DONE:'table-info'}[job.status]" v-for="job in jobs">
         <td>{{job.creationDate.toLocaleString()}}</td>
         <td v-for="fname in ['desc','status','area','user']">{{job[fname]}}</td>
       </tr>
