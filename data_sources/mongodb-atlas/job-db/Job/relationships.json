@@ -1,14 +1,1 @@
-{
-    "area": {
-        "ref": "#/relationship/mongodb-atlas/job-db/Location",
-        "source_key": "area",
-        "foreign_key": "_id",
-        "is_list": false
-    },
-    "user": {
-        "ref": "#/relationship/mongodb-atlas/job-db/UserInfo",
-        "source_key": "user",
-        "foreign_key": "_id",
-        "is_list": false
-    }
-}
+{}

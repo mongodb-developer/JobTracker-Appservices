@@ -5,10 +5,10 @@
             "bsonType": "objectId"
         },
         "area": {
-            "bsonType": "objectId"
+            "bsonType": "string"
         },
         "creationDate": {
-            "bsonType": "long"
+            "bsonType": "date"
         },
         "desc": {
             "bsonType": "string"
@@ -22,7 +22,8 @@
     },
     "required": [
         "_id",
-        "desc"
+        "desc",
+        "area"
     ],
     "title": "Job"
 }
