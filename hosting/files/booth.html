@@ -5,19 +5,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .hotspot {  z-index: 100; position: absolute;width: 20px; height:20px; border-radius: 50%; border: 1px solid red}
-        .wrapper {position: relative; border: 1px sold green;}
-        .img-fluid { margin: 0 auto; max-height: 95vh; }
+        .hotspot {  z-index: 100; position: absolute;width: 50px; height:30px; border-radius: 5px; border: 1px solid red}
+        .wrapper {  display: inline-block; position: relative;}
+        .img-fluid { max-height: 95vh; }
+
        
     </style>
     <script>
 
         const firstimage = "login"
         const images = {login:"applogin.png",main:"appimg.png"}
-        const hotspots=[ { img:"login",x:50,y:70,action:"main"},
-                           {img: "main", x:90,y:10,action:"login"},
-            {img: "main", x:50,y:50,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/Models.kt`},
-                   {img:"main",x:50,y:80,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/RealmRepo.kt`}];
+        const hotspots=[ { img:"login",x:40,y:65,w:20,h:5,action:"main"},
+                           {img: "main", x:82,y:12,w:10,h:5,action:"login"},
+            {img: "main", x:5,y:38,w:90,h:5,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/Models.kt`},
+                   {img:"main",x:50,y:80,w:10,h:5,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/RealmRepo.kt`}];
 
         
         function hsclick(action) {
@@ -60,6 +61,8 @@
                     image.appendChild(newelement);
                     newelement.style.top = `${hotspot.y}%`;
                     newelement.style.left = `${hotspot.x}%`;
+                    newelement.style.width = `${hotspot.w}%`;
+                    newelement.style.height = `${hotspot.h}%`;
                     console.log(`Add: ${hotspot.action}`);
                     newelement.addEventListener('click',hsclick.bind(null,hotspot.action))
                 }
@@ -84,15 +87,19 @@
                     <iframe style="height: 95vh; width: 100%" src="/index.html"></iframe>
                 
             </div>  
-            <div class="col bg-dark">
+            <div class="col-auto bg-dark">
                 <div id="codeholder">
                     <script style="height: 90vw; width: 90vw;" id="codeframe" ></script>
                 </div>
             </div>
             <div class="col">
-                <div id="imgwrapper" class="wrapper text-center">
-                <img id="screenshot" src="" class="img-fluid screenshot"></img>
+                <div class="text-center">
+                <div id="imgwrapper" class="wrapper ">
+                <img id="screenshot" src="" class="img-fluid"></img>
                 </div>
+                
+                </div>
+
             </div>
         </div>
     </div>
