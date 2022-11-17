@@ -21,7 +21,7 @@ private val realm by lazy {
 
     //Restrict what we sync to Unassigned jobs and those assigned to us
     //Sync only what we need not the whole database
-
+    
     val config =
         SyncConfiguration.Builder(user, schemaClass).name("job-db").schemaVersion(1)
             .initialSubscriptions { realm ->

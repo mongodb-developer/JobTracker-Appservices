@@ -21,8 +21,7 @@ private val realm by lazy {
 
 // Fetch lists  objects meeting a criteria with Query
 
-var unassignedJobs = realm.query<Job>("status = $0", Status.UNASSIGNED.name)
+var unassignedJobs  = realm.query<Job>("status = $0 AND area = $1", Status.UNASSIGNED.name,location.name)
 var acceptedJobs = realm.query<Job>("status = $0", Status.ACCEPTED.name)
 var completedJobs = realm.query<Job>("status = $0", Status.DONE.name)
-
 
