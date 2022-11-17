@@ -13,7 +13,7 @@
         }
 
         .code {
-           
+
             width: 7%;
             height: 4%;
             padding: 1%;
@@ -45,16 +45,56 @@
 
         /* Mapping of 'screen name' to image */
 
-        const images = { login: "applogin.png", main: "appimg.png" }
+        const images = {
+            applogin: "applogin.png", noneassigned: "noneassigned.png",eve:"eve.png",
+            onetask: "onetask.png", assigned: "assigned.png", assign: "assign.png",
+            done: "done.png", filter: "filter.png", notask: "notask.png", signup: "signup.png"
+        }
         /* Screen to start on*/
-        const firstimage = "login"
+        const firstimage = "applogin"
         /* Where to Click and what it does, x,y,w,h are %tages
            actions is wither screen:X or code:X */
 
-        const hotspots = [{ img: "login", x: 39.5, y: 68.5, w: 20, h: 5, action: "screen:main" },
-        { img: "main", x: 82, y: 9, w: 10, h: 5, action: "screen:login" },
+        const hotspots = [
+        { img: "applogin", x: 39.5, y: 65, w: 20, h: 5, action: "screen:onetask" },
+        { img: "applogin", x: 39.5, y: 70, w: 20, h: 3, action: "screen:signup" },
+        { img: "applogin", x: 61, y: 65, w: 10, h: 5, action: `code:login` },
+
+        { img: "signup",  x: 39.5, y: 66, w: 20, h: 5, action: "screen:applogin" },
+
+        { img: "onetask", x: 82, y: 43, w: 11, h: 3, action: "screen:assign" },
+        { img: "onetask", x: 70, y: 26, w: 23, h: 5, action: "screen:done" },
+        { img: "onetask", x: 40, y: 26, w: 23, h: 5, action: "screen:noneassigned" },
+        { img: "onetask", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img: "noneassigned", x: 70, y: 26, w: 23, h: 5, action: "screen:done" },
+        { img: "noneassigned", x: 10, y: 26, w: 23, h: 5, action: "screen:onetask" },
+        { img: "noneassigned", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img: "assigned", x: 70, y: 26, w: 23, h: 5, action: "screen:done" },
+        { img: "assigned", x: 10, y: 26, w: 23, h: 5, action: "screen:notask" },
+        { img: "assigned", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img: "assign", x: 6, y: 49, w: 23, h: 6, action: "screen:notask" },
+        { img: "assign", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img: "notask", x: 40, y: 26, w: 23, h: 5, action: "screen:assigned" },
+        { img: "notask", x: 70, y: 26, w: 23, h: 5, action: "screen:done" },
+        { img: "notask", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        
+        { img: "done", x: 10, y: 33, w: 50, h: 3, action: "screen:filter" },
+        { img: "done",x: 10, y: 26, w: 23, h: 5, action: "screen:onetask" },
+        { img: "done", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img: "filter", x: 10, y: 33, w: 50, h: 3, action: "screen:done" },
+        { img: "filter",x: 10, y: 26, w: 23, h: 5, action: "screen:onetask" },
+        { img: "filter", x: 82, y: 12, w: 10, h: 5, action: "screen:eve" },
+
+        { img : "eve",  x: 78, y: 12.5, w: 15, h: 4, action: "screen:applogin" },
+        
         { img: "main", x: 50, y: 38, w: 50, h: 5, action: `code:model` },
-        { img: "login", x: 63, y: 68.5, w: 10, h: 5, action: `code:login` }];
+        ];
 
 
         function hsclick(request) {
