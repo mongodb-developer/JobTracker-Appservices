@@ -1,10 +1,4 @@
 
-import io.realm.kotlin.types.ObjectId
-import io.realm.kotlin.types.RealmInstant
-import io.realm.kotlin.types.RealmObject
-import io.realm.kotlin.types.RealmUUID
-import io.realm.kotlin.types.annotations.PrimaryKey
-
 class Job : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.create()
@@ -14,3 +8,21 @@ class Job : RealmObject {
     var area: String = ""
     var user: String? = ""
 }
+
+
+// Open a Realm - not network connected
+
+private val realm by lazy {
+    val deviceConfig =
+        RealmConfiguration.Builder(schemaClass).name("job-db").schemaVersion(1).build()
+    Realm.open(deviceConfig)
+}
+
+
+// Fetch lists  objects meeting a criteria with Query
+
+var unassignedJobs = realm.query<Job>("status = $0", Status.UNASSIGNED.name)
+var acceptedJobs = realm.query<Job>("status = $0", Status.ACCEPTED.name)
+var completedJobs = realm.query<Job>("status = $0", Status.DONE.name)
+
+
