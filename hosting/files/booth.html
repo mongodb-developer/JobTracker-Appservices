@@ -41,6 +41,8 @@
             const [action,arg] = request.split(':')
             if (action == 'code') {
                 //Displays a file from a GH Repo as a GIST withoutu making a GIST, muche easier to manage ownership this way.
+                //We MAY want to change this to simply show the code - but the highlighting in a GIST is nice.
+                
                 const gistURL = `${baseRepo}/${language}/${arg}.${extension}`
                 let holder = document.getElementById("codeholder")
                 let newholder = document.createElement('div')
@@ -56,7 +58,7 @@
                 drawHotspots(arg)
             }
         }
-        
+
         function drawHotspots(name) {
             image = document.getElementById("imgwrapper")
             //Remove existing
