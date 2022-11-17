@@ -8,10 +8,16 @@
         .hotspot {
             z-index: 100;
             position: absolute;
-            width: 50px;
-            height: 30px;
+
             border-radius: 5px;
-            border: 1px solid red
+        }
+
+        .code {
+            border: 1px solid blue;
+        }
+
+        .link {
+            border: 1px solid lightgreen;
         }
 
         .wrapper {
@@ -24,25 +30,35 @@
         }
     </style>
     <script>
-      
+
         const baseRepo = `https://github.com/mongodb-developer/JobTracker-Appservices/blob/master/hosting/gists`;
+
+        /* This is Hard coced until we add mode examples */
+
         const language = `kotlin`;
         const extension = 'kt';
-        const firstimage = "login"
+
+        /* Mapping of 'screen name' to image */
+
         const images = { login: "applogin.png", main: "appimg.png" }
-        const hotspots = [{ img: "login", x: 40, y: 65, w: 50, h: 5, action: "screen:main" },
+        /* Screen to start on*/
+        const firstimage = "login"
+        /* Where to Click and what it does, x,y,w,h are %tages
+           actions is wither screen:X or code:X */
+
+        const hotspots = [{ img: "login", x: 40, y: 65, w: 20, h: 5, action: "screen:main" },
         { img: "main", x: 82, y: 12, w: 10, h: 5, action: "screen:login" },
-        { img: "main", x: 5, y: 38, w: 90, h: 5, action: `code:model` },
-        { img: "main", x: 50, y: 80, w: 10, h: 5, action: `code:login` }];
+        { img: "main", x: 5, y: 38, w: 50, h: 5, action: `code:model` },
+        { img: "login", x: 63, y: 65, w: 10, h: 5, action: `code:login` }];
 
 
         function hsclick(request) {
             console.log(request);
-            const [action,arg] = request.split(':')
+            const [action, arg] = request.split(':')
             if (action == 'code') {
                 //Displays a file from a GH Repo as a GIST withoutu making a GIST, muche easier to manage ownership this way.
                 //We MAY want to change this to simply show the code - but the highlighting in a GIST is nice.
-                
+
                 const gistURL = `${baseRepo}/${language}/${arg}.${extension}`
                 let holder = document.getElementById("codeholder")
                 let newholder = document.createElement('div')
@@ -71,15 +87,20 @@
 
             for (hotspot of hotspots) {
                 if (hotspot.img == name) {
-
+                    console.log(hotspot.img, name)
                     newelement = document.createElement('div')
-                    newelement.setAttribute('class', 'hotspot')
-                    newelement.setAttribute('class', 'hotspot')
+                    if (hotspot.action && hotspot.action.startsWith('screen')) {
+                        newelement.setAttribute('class', 'hotspot link')
+                    } else {
+                        newelement.setAttribute('class', 'hotspot code')
+                        //newelement.innerText="Code"
+                    }
                     image.appendChild(newelement);
                     newelement.style.top = `${hotspot.y}%`;
                     newelement.style.left = `${hotspot.x}%`;
                     newelement.style.width = `${hotspot.w}%`;
                     newelement.style.height = `${hotspot.h}%`;
+                  
                     console.log(`Add: ${hotspot.action}`);
                     newelement.addEventListener('click', hsclick.bind(null, hotspot.action))
                 }
