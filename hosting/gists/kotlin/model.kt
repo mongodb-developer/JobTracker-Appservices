@@ -5,8 +5,6 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.RealmUUID
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-
-
 class Job : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.create()
