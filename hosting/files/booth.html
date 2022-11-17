@@ -24,35 +24,39 @@
         }
     </style>
     <script>
-
+      
+        const baseRepo = `https://github.com/mongodb-developer/JobTracker-Appservices/blob/master/hosting/gists`;
+        const language = `kotlin`;
+        const extension = 'kt';
         const firstimage = "login"
         const images = { login: "applogin.png", main: "appimg.png" }
-        const hotspots = [{ img: "login", x: 40, y: 65, w: 50, h: 5, action: "main" },
-        { img: "main", x: 82, y: 12, w: 10, h: 5, action: "login" },
-        { img: "main", x: 5, y: 38, w: 90, h: 5, action: `https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/Models.kt` },
-        { img: "main", x: 50, y: 80, w: 10, h: 5, action: `https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/RealmRepo.kt` }];
+        const hotspots = [{ img: "login", x: 40, y: 65, w: 50, h: 5, action: "screen:main" },
+        { img: "main", x: 82, y: 12, w: 10, h: 5, action: "screen:login" },
+        { img: "main", x: 5, y: 38, w: 90, h: 5, action: `code:model` },
+        { img: "main", x: 50, y: 80, w: 10, h: 5, action: `code:login` }];
 
 
-        function hsclick(action) {
-            console.log(action);
-            if (action.startsWith("http")) {
-                //Link to Code
+        function hsclick(request) {
+            console.log(request);
+            const [action,arg] = request.split(':')
+            if (action == 'code') {
+                //Displays a file from a GH Repo as a GIST withoutu making a GIST, muche easier to manage ownership this way.
+                const gistURL = `${baseRepo}/${language}/${arg}.${extension}`
                 let holder = document.getElementById("codeholder")
                 let newholder = document.createElement('div')
                 newholder.setAttribute('id', 'codeholder')
                 holder.parentNode.replaceChild(newholder, holder);
-
                 let newscript = document.createElement('script')
                 newholder.appendChild(newscript);
-                let url = `https://emgithub.com/embed-v2.js?target=${encodeURI(action)}&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on`
+                let url = `https://emgithub.com/embed-v2.js?target=${encodeURI(gistURL)}&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on`
                 newscript.setAttribute("src", url);
             } else {
                 screenshot = document.getElementById("screenshot")
-                screenshot.src = images[action];
-                drawHotspots(action)
+                screenshot.src = images[arg];
+                drawHotspots(arg)
             }
         }
-
+        
         function drawHotspots(name) {
             image = document.getElementById("imgwrapper")
             //Remove existing
