@@ -13,7 +13,12 @@
         }
 
         .code {
-            border: 1px solid blue;
+           
+            width: 7%;
+            height: 4%;
+            padding: 1%;
+            background-color: white;
+            border-radius: 1em;
         }
 
         .link {
@@ -48,7 +53,7 @@
 
         const hotspots = [{ img: "login", x: 40, y: 65, w: 20, h: 5, action: "screen:main" },
         { img: "main", x: 82, y: 12, w: 10, h: 5, action: "screen:login" },
-        { img: "main", x: 5, y: 38, w: 50, h: 5, action: `code:model` },
+        { img: "main", x: 50, y: 38, w: 50, h: 5, action: `code:model` },
         { img: "login", x: 63, y: 65, w: 10, h: 5, action: `code:login` }];
 
 
@@ -91,16 +96,17 @@
                     newelement = document.createElement('div')
                     if (hotspot.action && hotspot.action.startsWith('screen')) {
                         newelement.setAttribute('class', 'hotspot link')
+                        newelement.style.width = `${hotspot.w}%`;
+                        newelement.style.height = `${hotspot.h}%`;
                     } else {
                         newelement.setAttribute('class', 'hotspot code')
-                        //newelement.innerText="Code"
+                        newelement.innerHTML = "&#128270;";
                     }
                     image.appendChild(newelement);
                     newelement.style.top = `${hotspot.y}%`;
                     newelement.style.left = `${hotspot.x}%`;
-                    newelement.style.width = `${hotspot.w}%`;
-                    newelement.style.height = `${hotspot.h}%`;
-                  
+
+
                     console.log(`Add: ${hotspot.action}`);
                     newelement.addEventListener('click', hsclick.bind(null, hotspot.action))
                 }
