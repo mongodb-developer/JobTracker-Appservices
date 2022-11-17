@@ -76,12 +76,37 @@
             drawHotspots(firstimage)
            
         }
+
+        function showCollections() {
+            window.open('https://cloud.mongodb.com/v2/635129e26bb7423374d3996f#metrics/replicaSet/63512ad66cd6ed691f5d9498/explorer/job-db/Job/find', 'Atlas Sync Collections');
+        }
+        function showSyncConfig() {
+            window.open('https://realm.mongodb.com/groups/635129e26bb7423374d3996f/apps/63512a379299e41618be5362/sync/config', 'Atlas Sync Config');
+        }
+
+        function showSDK() {
+            window.open('https://www.mongodb.com/docs/realm/sdk/kotlin/', 'SDK');
+        }
+
     </script>
 
 </head>
 
 <body onLoad="onLoad()">
     <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <nav  class="navbar navbar-expand-lg navbar-light bg-dark ">
+                    <span  class="navbar-brand  text-light">Atlas Device Sync</span>
+                    <select class="form-control mr-sm-2 w-25">
+                    <option > Kotlin - Android </option>
+                </select>
+                <button type="button" onClick="showCollections();" class="btn btn-primary ml-5"> Atlas Collections </button>
+                <button type="button" onClick="showSyncConfig();" class="btn btn-primary ml-5"> Sync Config  </button>
+                <button type="button" onClick="showSDK();" class="btn btn-primary ml-5"> SDK Docs  </button>
+                </nav>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                     <iframe style="height: 95vh; width: 100%" src="/index.html"></iframe>
