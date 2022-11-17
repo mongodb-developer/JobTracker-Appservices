@@ -7,10 +7,10 @@ Add Gists (Kotlin)
     - Login
     - Signup
     - Open Synced Realm
-Generate Sample Data
+~~Generate Sample Data~~
 Training Video?
 
-Case Insensitive Search in app
+~~Case Insensitive Search in app~~
 ------
 
 Add extra Languages to Gist
