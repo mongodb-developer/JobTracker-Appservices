@@ -1,10 +1,6 @@
 
   realm.write {
-                var job = unassignedJobs.first();
-                // Get it in this thread.
-                val currentJob = findLatest(job)
-               
-                copyToRealm(currentJob.apply {
-                    this.status = Status.ASSIGNED.name              
-                })
+                var job = unassignedJobs.first(); //Or whichever job we want to change
+                // Open it in this thread - it may be mid txn in another
+                findLatest(job).status = Status.ASSIGNED.name              
             }
