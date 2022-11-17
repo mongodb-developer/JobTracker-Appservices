@@ -1,0 +1,1 @@
+var filteredJobs = completedJobs.query<Job>("status = $0 AND desc CONTAINS '$1' ", Status.DONE.name, filtertext)
