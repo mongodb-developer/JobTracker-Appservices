@@ -1,10 +1,14 @@
 
+//a Job class, we index by status and area too
+
 class Job : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.create()
+    @Index
     var status: String? = ""
     var desc: String = ""
     var creationDate: RealmInstant? = null
+    @Index
     var area: String = ""
     var user: String? = ""
 }
