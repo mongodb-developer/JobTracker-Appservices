@@ -1,4 +1,4 @@
-Ensure Android install works
+~~Ensure Android install works~~
 Add Screenshots
 Change how hyperlinks show in screenshots
 Add Gists (Kotlin)
@@ -10,7 +10,7 @@ Add Gists (Kotlin)
 Generate Sample Data
 Training Video?
 
-
+Case Insensitive Search in app
 ------
 
 Add extra Languages to Gist

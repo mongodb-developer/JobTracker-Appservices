@@ -5,35 +5,47 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .hotspot {  z-index: 100; position: absolute;width: 50px; height:30px; border-radius: 5px; border: 1px solid red}
-        .wrapper {  display: inline-block; position: relative;}
-        .img-fluid { max-height: 95vh; }
+        .hotspot {
+            z-index: 100;
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid red
+        }
 
-       
+        .wrapper {
+            display: inline-block;
+            position: relative;
+        }
+
+        .img-fluid {
+            max-height: 95vh;
+        }
     </style>
     <script>
 
         const firstimage = "login"
-        const images = {login:"applogin.png",main:"appimg.png"}
-        const hotspots=[ { img:"login",x:40,y:65,w:50,h:5,action:"main"},
-                           {img: "main", x:82,y:12,w:10,h:5,action:"login"},
-            {img: "main", x:5,y:38,w:90,h:5,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/Models.kt`},
-                   {img:"main",x:50,y:80,w:10,h:5,action:`https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/RealmRepo.kt`}];
+        const images = { login: "applogin.png", main: "appimg.png" }
+        const hotspots = [{ img: "login", x: 40, y: 65, w: 50, h: 5, action: "main" },
+        { img: "main", x: 82, y: 12, w: 10, h: 5, action: "login" },
+        { img: "main", x: 5, y: 38, w: 90, h: 5, action: `https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/Models.kt` },
+        { img: "main", x: 50, y: 80, w: 10, h: 5, action: `https://github.com/mongodb-developer/Job-Tracker/blob/master/shared/src/commonMain/kotlin/com/mongodb/jobtracker/RealmRepo.kt` }];
 
-        
+
         function hsclick(action) {
             console.log(action);
-            if(action.startsWith("http")) {
+            if (action.startsWith("http")) {
                 //Link to Code
-            let holder = document.getElementById("codeholder")
-            let newholder = document.createElement('div')
-            newholder.setAttribute('id','codeholder')
-            holder.parentNode.replaceChild( newholder,holder); 
-           
-            let newscript = document.createElement('script')
-            newholder.appendChild(newscript);
-            let url = `https://emgithub.com/embed-v2.js?target=${encodeURI(action)}&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on`
-            newscript.setAttribute("src",url);
+                let holder = document.getElementById("codeholder")
+                let newholder = document.createElement('div')
+                newholder.setAttribute('id', 'codeholder')
+                holder.parentNode.replaceChild(newholder, holder);
+
+                let newscript = document.createElement('script')
+                newholder.appendChild(newscript);
+                let url = `https://emgithub.com/embed-v2.js?target=${encodeURI(action)}&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on`
+                newscript.setAttribute("src", url);
             } else {
                 screenshot = document.getElementById("screenshot")
                 screenshot.src = images[action];
@@ -41,30 +53,29 @@
             }
         }
 
-        function drawHotspots(name)
-        {
+        function drawHotspots(name) {
             image = document.getElementById("imgwrapper")
             //Remove existing
             const existingHotspots = image.getElementsByClassName("hotspot")
-        
+
             //Easy way to remove all in a live list
-            while (existingHotspots.length > 0){
+            while (existingHotspots.length > 0) {
                 existingHotspots[0].remove();
             }
-      
-             for(hotspot of hotspots) {
-                if(hotspot.img == name) {
-                   
+
+            for (hotspot of hotspots) {
+                if (hotspot.img == name) {
+
                     newelement = document.createElement('div')
-                    newelement.setAttribute('class','hotspot')
-                    newelement.setAttribute('class','hotspot')
+                    newelement.setAttribute('class', 'hotspot')
+                    newelement.setAttribute('class', 'hotspot')
                     image.appendChild(newelement);
                     newelement.style.top = `${hotspot.y}%`;
                     newelement.style.left = `${hotspot.x}%`;
                     newelement.style.width = `${hotspot.w}%`;
                     newelement.style.height = `${hotspot.h}%`;
                     console.log(`Add: ${hotspot.action}`);
-                    newelement.addEventListener('click',hsclick.bind(null,hotspot.action))
+                    newelement.addEventListener('click', hsclick.bind(null, hotspot.action))
                 }
             }
         }
@@ -74,7 +85,7 @@
             screenshot = document.getElementById("screenshot")
             screenshot.src = images[firstimage];
             drawHotspots(firstimage)
-           
+
         }
 
         function showCollections() {
@@ -100,37 +111,39 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <nav  class="navbar navbar-expand-lg navbar-light bg-dark ">
-                    <span  class="navbar-brand  text-light">Atlas Device Sync</span>
+                <nav class="navbar navbar-expand-lg navbar-light bg-dark ">
+                    <span class="navbar-brand  text-light">Atlas Device Sync</span>
                     <select class="form-control mr-sm-2 w-25">
-                    <option > Kotlin - Android </option>
-                    <option disabled> Java - Android </option>
-                    <option disabled> Swift - IOS </option>
-                    <option disabled> Flutter </option>
-                </select>
-                <button type="button" onClick="showCollections();" class="btn btn-primary ml-5"> Atlas Collections </button>
-                <button type="button" onClick="showSyncConfig();" class="btn btn-primary ml-5"> Sync Config  </button>
-                <button type="button" onClick="showSDK();" class="btn btn-primary ml-5"> SDK Docs  </button>
-                <button type="button" onClick="showQR();" class="btn btn-primary ml-5"> Install Android App</button>
+                        <option> Kotlin - Android </option>
+                        <option disabled> Java - Android </option>
+                        <option disabled> Swift - IOS </option>
+                        <option disabled> Flutter </option>
+                    </select>
+                    <button type="button" onClick="showCollections();" class="btn btn-primary ml-5"> Atlas Collections
+                    </button>
+                    <button type="button" onClick="showSyncConfig();" class="btn btn-primary ml-5"> Sync Config
+                    </button>
+                    <button type="button" onClick="showSDK();" class="btn btn-primary ml-5"> SDK Docs </button>
+                    <button type="button" onClick="showQR();" class="btn btn-primary ml-5"> Install Android App</button>
                 </nav>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                    <iframe style="height: 95vh; width: 100%" src="/index.html"></iframe>
-                
-            </div>  
+                <iframe style="height: 95vh; width: 100%" src="/index.html"></iframe>
+
+            </div>
             <div class="col-auto bg-dark">
                 <div id="codeholder">
-                    <script style="height: 90vw; width: 90vw;" id="codeframe" ></script>
+                    <script style="height: 90vw; width: 90vw;" id="codeframe"></script>
                 </div>
             </div>
             <div class="col">
                 <div class="text-center">
-                <div id="imgwrapper" class="wrapper ">
-                <img id="screenshot" src="" class="img-fluid"></img>
-                </div>
-                
+                    <div id="imgwrapper" class="wrapper ">
+                        <img id="screenshot" src="" class="img-fluid"></img>
+                    </div>
+
                 </div>
 
             </div>
